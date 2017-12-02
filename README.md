@@ -53,9 +53,13 @@ Example:
 Here's a sample visualization of the training images and the histogram of the
 training set depicting the spread of traffic signs in the training set.
 
+![training samples](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/train_sample_hist.png)
+
 ## CNN Model
 
 ### Design/Architecture
+
+![lenet](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/lenet.png)
 
 As shown in the image above, the CNN architecture consists of the following
 layers:
@@ -92,6 +96,8 @@ subtracting & dividing each of our grayscale pixels by 28.
 The image below shows sample images after pre-processing. column1 is the raw
 image sample, column2 is the grayscale and column3 is normalized.
 
+![sample img processed](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/data_processing.png)
+
 ### Training
 
 The model was trained using the following components
@@ -105,7 +111,7 @@ The model was trained using the following components
 
 ### Solution Approach
 
-We implement the famous [LeNet](http://yann.lecun.com/exdb/lenet/) CNN model for
+I implement the famous [LeNet](http://yann.lecun.com/exdb/lenet/) CNN model for
 our traffic sign classifier. Although LeNet was originally designed for
 character recognition, we can use it for traffic sign classification as well
 since the core principle of this technique relies on recognizing
@@ -145,6 +151,7 @@ images represent the ideal scenario, I wanted to see how the model performed in
 such ideal sceanraios
 
 sample images:
+![synthetic test img](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/synthetic_test_set.png)
 
 ### Real world images
 These traffic signs are also taken from the internet, but these are real world
@@ -153,8 +160,11 @@ images with real world anomalies contained in the images (ex: oclussion, exposre
 depict the real world usage scenarios.
 
 sample images:
+![real test img](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/real_test_set.png)
 
 ### Prediction
+
+![synthetic test img processed](https://github.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/blob/master/doc/images/synthetic_test_set_processed.png)
 
 Synthetic test image = 100%
 
@@ -165,6 +175,9 @@ Synthetic test image = 100%
 | General caution | General caution |
 | Traffic signals | Traffic signals |
 | Roundabout mandatory | Round about mandatory|
+
+
+![real test img processed](https://raw.githubusercontent.com/nitheeshkl/Udacity_CarND_TrafficSignClassifier/master/doc/images/real_test_set_processed.png)
 
 Real world test image = 83.3%
 
@@ -183,7 +196,7 @@ As expected, the synthetic data results in 100% accuracy since the images are
 extremely clear. Whereas in the real world images, the model only gave a 100%
 accurate result on only one sign (second row)
 
-## Possbile improvement
+## Possbile improvements
 
 This solution & its results seen are from the direct adaptation of LeNet
 architecture for the traffic sign classification. [Sermanet](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) 
