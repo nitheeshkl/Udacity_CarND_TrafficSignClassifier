@@ -70,15 +70,15 @@ layers:
 
 1. INPUT    - 32x32x1 
 2. CONV     - input=32x32x1  output=28x28x6
-   RELU
-   POOL     - input=28x28x6  output=14x14x6
+    * RELU
+    * POOL     - input=28x28x6  output=14x14x6
 3. CONV     - input=14x14x6  output10x10x16
-   RELU
-   POOL     - input=10x10x16 output=5x5x16
+    * RELU
+    * POOL     - input=10x10x16 output=5x5x16
 4. FC       - input=5x5x16   output=120
-   SOFTMAX
+    * SOFTMAX
 5. FC       - input=120      output=84
-   SOFTMAX
+   * SOFTMAX
 6. FC       - input=84       output=43
 
 
