@@ -53,7 +53,7 @@ Example:
 Here's a sample visualization of the training images and the histogram of the
 training set depicting the spread of traffic signs in the training set.
 
-## Model Architecture
+## CNN Model
 
 We implement the famous [LeNet](http://yann.lecun.com/exdb/lenet/) CNN model for
 our traffic sign classifier. Although LeNet was originally designed for
@@ -62,25 +62,62 @@ since the core principle of this technique relies on recognizing
 patters/features in images rather than just matching a fixed set of key features
 as seen in other image matching solutions.
 
-### Design
+### Design/Architecture
 
 
 As shown in the image above, the CNN architecture consists of the following
 layers:
 
-1. INPUT    - 32x32x1 
+1. INPUT    - 32x32x1
 2. CONV     - input=32x32x1  output=28x28x6
-    * RELU
-    * POOL     - input=28x28x6  output=14x14x6
+   
+   filter_size = 5x5
+   num filters = 6
+   padding = 0
+   stride = 1
+   bias_size = 6
+  
+  * RELU
+  * POOL  - input=28x28x6  output=14x14x6
+      kernel_size = 2x2
+      stride = 2
+      algo = max
+
 3. CONV     - input=14x14x6  output10x10x16
-    * RELU
-    * POOL     - input=10x10x16 output=5x5x16
+
+   filter_size = 5x5
+   num filters = 16
+   padding = 0
+   stride = 1
+   bias_size = 16
+
+  * RELU
+  * POOL  - input=10x10x16 output=5x5x16
+      kernel_size = 2x2
+      stride = 2
+      algo = max
+
 4. FC       - input=5x5x16   output=120
-    * SOFTMAX
+  * SOFTMAX
 5. FC       - input=120      output=84
-   * SOFTMAX
+  * SOFTMAX
 6. FC       - input=84       output=43
 
+
+| Layer | Description       | Params |
+|-------|-------------------|--------|
+| Input | input samples     | 32x32x1 |
+| CONV 1| convolution       | filter_size=5x5, #filters=6, padding=0, stride=1, #bias=6 |
+| RELU  | activation        | |
+| POOL  | sub sampling      | kernel=2x2, stride=2, algo=max |
+| CONV 2| convolution       | filter_size=5x5, #filters=16, padding=0, stride=1, #bias=16 |
+| RELU  | activation        | |
+| POOL  | sub sampling      | kernel=2x2, stride=2, algo=max |
+| FC 1  | fully connected   | input=5x5x16(400) output=120 |
+|SOFTMAX| activation        | |
+| FC 2  | fully connected   | input=120 output=84 |
+|SOFTMAX| activation        | |
+| Output| output logits     | input=84 output=43 |
 
 ### Data pre-processing
 
@@ -90,4 +127,18 @@ As seen in the above design, the model expects the input samples to be in
 32x32x3) to grascale (1 channel; 32x32x1).
 
 __Normalization__
+Generally, it required that all the input data be on the same scale, which
+yields in faster convergence...etc benefits. While there are several methods to
+perform normalization, we perform a quick normalization on our input samples by
+subtracting & dividing each of our grayscale pixels by 28.
+
+The image below shows sample images after pre-processing. column1 is the raw
+image sample, column2 is the grayscale and column3 is normalized.
+
+### Training
+
+The model was trained using the following components
+
+* optimizer = Adam Optimizer
+
 
