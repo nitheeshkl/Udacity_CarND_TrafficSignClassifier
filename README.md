@@ -55,53 +55,10 @@ training set depicting the spread of traffic signs in the training set.
 
 ## CNN Model
 
-We implement the famous [LeNet](http://yann.lecun.com/exdb/lenet/) CNN model for
-our traffic sign classifier. Although LeNet was originally designed for
-character recognition, we can use it for traffic sign classification as well
-since the core principle of this technique relies on recognizing
-patters/features in images rather than just matching a fixed set of key features
-as seen in other image matching solutions.
-
 ### Design/Architecture
-
 
 As shown in the image above, the CNN architecture consists of the following
 layers:
-
-1. INPUT    - 32x32x1
-2. CONV     - input=32x32x1  output=28x28x6
-   
-   filter_size = 5x5
-   num filters = 6
-   padding = 0
-   stride = 1
-   bias_size = 6
-  
-  * RELU
-  * POOL  - input=28x28x6  output=14x14x6
-      kernel_size = 2x2
-      stride = 2
-      algo = max
-
-3. CONV     - input=14x14x6  output10x10x16
-
-   filter_size = 5x5
-   num filters = 16
-   padding = 0
-   stride = 1
-   bias_size = 16
-
-  * RELU
-  * POOL  - input=10x10x16 output=5x5x16
-      kernel_size = 2x2
-      stride = 2
-      algo = max
-
-4. FC       - input=5x5x16   output=120
-  * SOFTMAX
-5. FC       - input=120      output=84
-  * SOFTMAX
-6. FC       - input=84       output=43
 
 
 | Layer | Description       | Params |
@@ -140,5 +97,101 @@ image sample, column2 is the grayscale and column3 is normalized.
 The model was trained using the following components
 
 * optimizer = Adam Optimizer
+* batch size = 128
+* epochs = 100
+* learning rate = 0.001
+* mean = 0
+* std deviation = 0.1
 
+### Solution Approach
 
+We implement the famous [LeNet](http://yann.lecun.com/exdb/lenet/) CNN model for
+our traffic sign classifier. Although LeNet was originally designed for
+character recognition, we can use it for traffic sign classification as well
+since the core principle of this technique relies on recognizing
+patters/features in images rather than just matching a fixed set of key features
+as seen in other image matching solutions.
+
+The following table highlights some of the experiments conducted
+
+| Epochs | Batch size | learning rate | validation accuracy (%) | test accuracy (%) |
+|--------|------------|---------------|-------------------------|-------------------|
+| 60     | 128        | 0.001         | 93.1                    | 89.9              |
+| 100    | 100        | 0.001         | 93.6                    | 81                |
+| 100    | 256        | 0.001         | 90.1                    | 78.6              |
+| 150    | 100        | 0.0001        | 91.8                    | 68.9              |
+| 100    | 128        | 0.001         | 94.9                    | 92.6              |
+| 150    | 128        | 0.001         | 95.5                    | 93.3              |
+
+Increasing the batch size beyond 128 didn't seem to show significant
+improvement. However, increasing the number of epochs resulted in higer accuracy
+in both validation & test set with learning rate at 0.001. Lowering the learning
+rate decreased accuracy. The optimal learning rate was see between 0.001-0.0009.
+
+Therefore, the final model had the following results
+
+* Epochs = 150,  batch-size = 128, learning-rate = 0.001
+* validation set accuracy = 95.5%
+* test set accuracy = 93.3%
+
+## Testing models on new images
+
+With the model finalized as described above, two sets of new images taken from
+the Internet was used for testing the model.
+
+### Synthetic images
+These traffic signs are digitally created traffic signs. since these kind of
+images represent the ideal scenario, I wanted to see how the model performed in
+such ideal sceanraios
+
+sample images:
+
+### Real world images
+These traffic signs are also taken from the internet, but these are real world
+images with real world anomalies contained in the images (ex: oclussion, exposre
+& contrast, sheer change...etc). The models performace on these test image will
+depict the real world usage scenarios.
+
+sample images:
+
+### Prediction
+
+Synthetic test image = 100%
+
+| Actual | predicted |
+|--------|-----------|
+| Speed limit (60km/h) | Speed limit (60km/h) |
+| stop | stop |
+| General caution | General caution |
+| Traffic signals | Traffic signals |
+| Roundabout mandatory | Round about mandatory|
+
+Real world test image = 83.3%
+
+| Actual | prediction #1 | prediction #2 | prediction #3 | prediction #4 | prediction #5 |
+|--------|---------------|---------------|---------------|---------------|---------------|
+| 3      | 29 (97.5) | 26 (2.3) | 17 (0.09) | 37 (0.05) | 28 (0.02) |
+| 14     | 14 (100) | 1  (0) | 2  (0) | 33 (0) | 38 (0) |
+| 18     | 13 (100) | 35 (0) | 9  (0) | 28 (0) | 12 (0) |
+| 26     | 17 (100) | 33 (0) | 9  (0) | 34 (0) | 14 (0) |
+| 40     | 38 (100) | 18 (0) | 34 (0) | 0  (0) | 25 (0) |
+
+The visualizatoin with bar charts for these results is available in the
+notebook.
+
+As expected, the synthetic data results in 100% accuracy since the images are
+extremely clear. Whereas in the real world images, the model only gave a 100%
+accurate result on only one sign (second row)
+
+## Possbile improvement
+
+This solution & its results seen are from the direct adaptation of LeNet
+architecture for the traffic sign classification. [Sermanet](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) 
+defines a modified version of LeNet which results in accuracy upto 99%. Key
+changes include
+
+* changes to CNN architecture, where the results from CONV2 are also fed
+  together into FC1
+* chagnes in CNN architecture input layer to handle RGB color space.
+* increasing training set by upsampling/adding morphed images for classes with
+  less samples.
